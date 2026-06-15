@@ -1,0 +1,247 @@
+:root {
+  --bg: #0b0d10;
+  --accent: #ff5e3a;
+  --accent-2: #5ef0c8;
+  --text: #f4f1ea;
+  --text-dim: #9aa0a6;
+  --panel-bg: rgba(10, 12, 16, 0.78);
+  --danger: #ff3b3b;
+  --font-display: 'Bungee', 'Arial Black', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ---------- Stage (video + canvases) ---------- */
+#stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+#webcam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* mirror for natural interaction */
+  filter: brightness(0.55) saturate(1.1);
+}
+
+#game-canvas,
+#overlay-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1); /* mirror to match video */
+}
+
+#overlay-canvas {
+  pointer-events: none;
+}
+
+/* ---------- HUD ---------- */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 24px;
+  z-index: 10;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.hud-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--panel-bg);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 8px 18px;
+  min-width: 90px;
+}
+
+.hud-label {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+.hud-value {
+  font-size: 1.4rem;
+  color: var(--accent-2);
+}
+
+#lives-block .hud-value {
+  color: var(--danger);
+  letter-spacing: 0.2em;
+}
+
+/* ---------- Screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 94, 58, 0.18), transparent 60%),
+    rgba(5, 6, 8, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.screen.hidden {
+  display: none;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px 48px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.panel h1 {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(255, 94, 58, 0.5);
+  margin-bottom: 12px;
+}
+
+.tagline {
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.instructions {
+  list-style: none;
+  text-align: left;
+  margin: 0 0 28px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.instructions li {
+  font-size: 0.92rem;
+  color: var(--text);
+  padding-left: 22px;
+  position: relative;
+  line-height: 1.4;
+}
+
+.instructions li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-2);
+}
+
+.btn-primary {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: #0b0d10;
+  background: linear-gradient(135deg, var(--accent-2), #34c9a3);
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 10px 30px rgba(94, 240, 200, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(94, 240, 200, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.status-text {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  min-height: 1.2em;
+}
+
+.status-text.error {
+  color: var(--danger);
+}
+
+/* ---------- Banner ---------- */
+.banner {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 59, 59, 0.15);
+  border: 1px solid rgba(255, 59, 59, 0.4);
+  color: #ffb3b3;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  z-index: 15;
+  letter-spacing: 0.03em;
+}
+
+.banner.hidden {
+  display: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .panel {
+    padding: 28px 24px;
+  }
+  .panel h1 {
+    font-size: 2rem;
+  }
+  #hud {
+    padding: 12px 14px;
+  }
+  .hud-block {
+    padding: 6px 12px;
+    min-width: 70px;
+  }
+  .hud-value {
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Hand Ninja — Slice fruit with your finger</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Camera + game canvas stack -->
+    <div id="stage">
+      <video id="webcam" playsinline autoplay muted></video>
+      <canvas id="game-canvas"></canvas>
+      <canvas id="overlay-canvas"></canvas>
+    </div>
+
+    <!-- HUD -->
+    <header id="hud">
+      <div class="hud-block" id="score-block">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="score-value">0</span>
+      </div>
+      <div class="hud-block" id="combo-block">
+        <span class="hud-label">Combo</span>
+        <span class="hud-value" id="combo-value">x0</span>
+      </div>
+      <div class="hud-block" id="lives-block">
+        <span class="hud-label">Lives</span>
+        <span class="hud-value" id="lives-value">●●●</span>
+      </div>
+    </header>
+
+    <!-- Start screen -->
+    <section id="start-screen" class="screen">
+      <div class="panel">
+        <h1>HAND NINJA</h1>
+        <p class="tagline">Slice fruit using your index finger as a blade</p>
+        <ul class="instructions">
+          <li>Allow camera access when prompted</li>
+          <li>Show your right hand to the camera</li>
+          <li>Move your <strong>index fingertip</strong> to swipe and slice fruit</li>
+          <li>Avoid letting fruit fall — and never touch the bombs</li>
+        </ul>
+        <button id="start-btn" class="btn-primary">Enable Camera &amp; Start</button>
+        <p id="status-text" class="status-text"></p>
+      </div>
+    </section>
+
+    <!-- Pause / calibration hint -->
+    <div id="hand-warning" class="banner hidden">
+      Show your hand to the camera
+    </div>
+
+    <!-- Game over screen -->
+    <section id="gameover-screen" class="screen hidden">
+      <div class="panel">
+        <h1>GAME OVER</h1>
+        <p class="tagline" id="final-score">Score: 0</p>
+        <button id="restart-btn" class="btn-primary">Play Again</button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MediaPipe Hands (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+  <!-- App modules -->
+  <script src="js/utils/math.js"></script>
+  <script src="js/utils/assetLoader.js"></script>
+  <script src="js/core/handTracker.js"></script>
+  <script src="js/core/blade.js"></script>
+  <script src="js/entities/fruit.js"></script>
+  <script src="js/entities/particle.js"></script>
+  <script src="js/core/spawner.js"></script>
+  <script src="js/core/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
