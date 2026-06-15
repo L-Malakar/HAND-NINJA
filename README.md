@@ -41,25 +41,6 @@ fruit-ninja-hand/
         └── assetLoader.js       # Procedurally generates fruit/bomb sprites
 \`\`\`
 
-## Running locally
-
-Because the camera API and ES modules require a secure context, serve the
-files over HTTP(S) rather than opening \`index.html\` directly:
-
-\`\`\`bash
-cd fruit-ninja-hand
-python3 -m http.server 8080
-# then open http://localhost:8080
-\`\`\`
-
-Or with Node:
-
-\`\`\`bash
-npx serve .
-\`\`\`
-
-## Deploying
-
 This is a fully static site — deploy the \`fruit-ninja-hand/\` folder as-is to
 any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 **HTTPS is required** in production for camera access (except on \`localhost\`).
