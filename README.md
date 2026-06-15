@@ -64,3 +64,5 @@ any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 - **Blade feel**: adjust \`maxPoints\`, \`fadeMs\`, and smoothing factor
   (\`SMOOTHING\` in \`game.js\`).
 \`\`\`
+
+@l-malakar
