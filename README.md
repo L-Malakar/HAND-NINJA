@@ -21,7 +21,7 @@ No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 
 ## Project structure
 
-\`\`\`
+```
 fruit-ninja-hand/
 ├── index.html              # App shell, screens, HUD
 ├── css/
@@ -39,30 +39,30 @@ fruit-ninja-hand/
     └── utils/
         ├── math.js             # Shared math/geometry helpers
         └── assetLoader.js       # Procedurally generates fruit/bomb sprites
-\`\`\`
+```
 
-This is a fully static site — deploy the \`fruit-ninja-hand/\` folder as-is to
+This is a fully static site — deploy the `fruit-ninja-hand/` folder as-is to
 any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
-**HTTPS is required** in production for camera access (except on \`localhost\`).
+**HTTPS is required** in production for camera access (except on `localhost`).
 
 ## Browser support & notes
 
-- Requires a browser with \`getUserMedia\` and WebGL support (MediaPipe Hands
+- Requires a browser with `getUserMedia` and WebGL support (MediaPipe Hands
   uses WebGL internally). Recent Chrome, Edge, and Safari versions work well.
 - Works on mobile, but performance depends on device GPU. For best results,
   use good lighting and keep your hand within the frame.
 - The "Left"/"Right" hand label from MediaPipe is based on the unmirrored
   camera image; since the video and canvases are mirrored via CSS for a
-  natural mirror-like experience, the code maps MediaPipe's \`"Left"\` label to
-  the user's actual right hand (see \`handTracker.js\` for details).
+  natural mirror-like experience, the code maps MediaPipe's `"Left"` label to
+  the user's actual right hand (see `handTracker.js` for details).
 
 ## Customization
 
-- **Difficulty**: adjust spawn intervals and gravity in \`spawner.js\`.
-- **Lives / combo window**: tune constants at the top of \`game.js\`.
-- **Fruit types & colors**: edit \`FRUIT_DEFS\` in \`assetLoader.js\`.
-- **Blade feel**: adjust \`maxPoints\`, \`fadeMs\`, and smoothing factor
-  (\`SMOOTHING\` in \`game.js\`).
-\`\`\`
-
+- **Difficulty**: adjust spawn intervals and gravity in `spawner.js`.
+- **Lives / combo window**: tune constants at the top of `game.js`.
+- **Fruit types & colors**: edit `FRUIT_DEFS` in `assetLoader.js`.
+- **Blade feel**: adjust `maxPoints`, `fadeMs`, and smoothing factor
+  (`SMOOTHING` in `game.js`).
+```
 @l-malakar
+```
