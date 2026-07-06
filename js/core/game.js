@@ -22,7 +22,9 @@ class Game {
     this.spawner = null; // created on resize/start since it needs canvas size
 
     this.fruits = [];
+    this.fruitHalves = [];
     this.particles = [];
+    this.screenEffects = [];
 
     this.score = 0;
     this.combo = 0;
@@ -88,7 +90,9 @@ class Game {
 
   start() {
     this.fruits = [];
+    this.fruitHalves = [];
     this.particles = [];
+    this.screenEffects = [];
     this.score = 0;
     this.combo = 0;
     this.lives = 3;
@@ -148,6 +152,12 @@ class Game {
     }
     this.fruits = this.fruits.filter((f) => !f.markedForRemoval);
 
+    // Update fruit halves (independent pieces from previously sliced fruit)
+    for (const half of this.fruitHalves) {
+      half.update(dt, this.height);
+    }
+    this.fruitHalves = this.fruitHalves.filter((h) => !h.markedForRemoval);
+
     // Collision: blade segment vs fruit
     const segment = this.blade.getLatestSegment();
     if (segment && this.blade.getSpeed() > 0.15) {
@@ -166,6 +176,13 @@ class Game {
 
         if (hit) {
           const angle = Math.atan2(segment.y2 - segment.y1, segment.x2 - segment.x1);
+
+          if (!fruit.isBomb) {
+            // Split into two independent pieces that actually separate.
+            const [halfA, halfB] = FruitHalf.createPairFromFruit(fruit, angle);
+            this.fruitHalves.push(halfA, halfB);
+          }
+
           fruit.slice(angle);
 
           if (fruit.isBomb) {
@@ -180,6 +197,10 @@ class Game {
     // Update particles
     for (const p of this.particles) p.update(dt);
     this.particles = this.particles.filter((p) => p.alive);
+
+    // Update lingering splash effects at cut spots
+    for (const fx of this.screenEffects) fx.update(dt);
+    this.screenEffects = this.screenEffects.filter((fx) => !fx.markedForRemoval);
 
     // Combo decay
     if (this.combo > 0) {
@@ -200,6 +221,7 @@ class Game {
 
     const color = this._juiceColorFor(fruit.type);
     this.particles.push(...Particle.burst(fruit.x, fruit.y, color, 16));
+    this.screenEffects.push(new ScreenEffect(fruit.x, fruit.y, color, fruit.radius * 1.4));
 
     this.callbacks.onScoreChange?.(this.score);
     this.callbacks.onComboChange?.(this.combo);
@@ -254,7 +276,9 @@ class Game {
     ctx.clearRect(0, 0, this.width, this.height);
     overlayCtx.clearRect(0, 0, this.width, this.height);
 
+    for (const fx of this.screenEffects) fx.draw(ctx);
     for (const fruit of this.fruits) fruit.draw(ctx);
+    for (const half of this.fruitHalves) half.draw(ctx);
     for (const p of this.particles) p.draw(ctx);
 
     this.blade.draw(overlayCtx);
