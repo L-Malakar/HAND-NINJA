@@ -30,8 +30,6 @@ class Fruit {
 
     this.sliced = false;
     this.sliceAngle = 0;
-    this.sliceVx1 = 0;
-    this.sliceVx2 = 0;
 
     this.alive = true; // false once off-screen/cleanup
     this.markedForRemoval = false;
@@ -46,12 +44,6 @@ class Fruit {
     this.y += this.vy * dt;
     this.rotation += this.angularVelocity * dt;
 
-    if (this.sliced) {
-      // Halves drift apart slightly
-      this.sliceVx1 *= 0.99;
-      this.sliceVx2 *= 0.99;
-    }
-
     // Cleanup when well below screen
     if (this.y - this.radius > canvasHeight + 200) {
       this.markedForRemoval = true;
@@ -59,16 +51,17 @@ class Fruit {
   }
 
   /**
-   * Mark this fruit as sliced, recording the slice direction for
-   * the half-rendering animation.
+   * Mark this fruit as sliced. The actual "splitting into two pieces"
+   * is handled by FruitHalf.createPairFromFruit(), which spawns two
+   * independent physics bodies from this fruit's current state. This
+   * fruit itself is removed from the game right after slicing.
    * @param {number} angle - angle of the slicing blade (radians)
    */
   slice(angle) {
     if (this.sliced) return;
     this.sliced = true;
     this.sliceAngle = angle;
-    this.sliceVx1 = -Math.abs(this.vx) - MathUtils.randomRange(40, 90);
-    this.sliceVx2 = Math.abs(this.vx) + MathUtils.randomRange(40, 90);
+    this.markedForRemoval = true;
   }
 
   /**
@@ -76,48 +69,17 @@ class Fruit {
    * @param {CanvasRenderingContext2D} ctx
    */
   draw(ctx) {
+    // Sliced fruit is marked for removal immediately (see slice()); its
+    // two pieces continue on as independent FruitHalf entities, so this
+    // only ever needs to draw the whole, unsliced fruit.
     const sprite = AssetLoader.getSprite(this.type);
     if (!sprite) return;
     const size = this.radius * 2;
 
-    if (!this.sliced) {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
-      ctx.drawImage(sprite, -this.radius, -this.radius, size, size);
-      ctx.restore();
-      return;
-    }
-
-    // Draw two halves separating along the slice angle
-    const perpAngle = this.sliceAngle + Math.PI / 2;
-
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rotation);
-
-    // Clip half 1
-    ctx.save();
-    ctx.rotate(perpAngle);
-    ctx.translate(this.sliceVx1 * 0.01, 0);
-    ctx.beginPath();
-    ctx.rect(-this.radius * 1.5, -this.radius * 1.5, this.radius * 1.5, this.radius * 3);
-    ctx.clip();
-    ctx.rotate(-perpAngle);
     ctx.drawImage(sprite, -this.radius, -this.radius, size, size);
-    ctx.restore();
-
-    // Clip half 2
-    ctx.save();
-    ctx.rotate(perpAngle);
-    ctx.translate(this.sliceVx2 * 0.01, 0);
-    ctx.beginPath();
-    ctx.rect(0, -this.radius * 1.5, this.radius * 1.5, this.radius * 3);
-    ctx.clip();
-    ctx.rotate(-perpAngle);
-    ctx.drawImage(sprite, -this.radius, -this.radius, size, size);
-    ctx.restore();
-
     ctx.restore();
   }
 }
