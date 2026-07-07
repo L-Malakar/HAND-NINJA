@@ -5,11 +5,16 @@
  * object), each FruitHalf is its own physics body: its own position,
  * velocity, gravity, and rotation/spin. This makes the two halves
  * genuinely separate after the cut instead of moving/rotating together.
+ *
+ * The half's *image* is also built to look like a real cut cross-section:
+ * the flat cut face shows flesh + seeds/segments, while the curved outer
+ * edge still shows the fruit's skin/rind, with a thin bright rim where
+ * the two meet (like the wet edge of a fresh cut).
  */
 class FruitHalf {
   /**
    * @param {Object} opts
-   * @param {HTMLCanvasElement|HTMLImageElement} opts.sprite - pre-clipped half image
+   * @param {HTMLCanvasElement|HTMLImageElement} opts.sprite - pre-rendered half image
    * @param {number} opts.x
    * @param {number} opts.y
    * @param {number} opts.radius - original fruit radius (half image is radius*2 square)
@@ -73,7 +78,6 @@ class FruitHalf {
    * @returns {[FruitHalf, FruitHalf]}
    */
   static createPairFromFruit(fruit, sliceAngle) {
-    const sprite = AssetLoader.getSprite(fruit.type);
     const radius = fruit.radius;
 
     // Direction of the cut expressed in the fruit's own (unrotated) sprite
@@ -81,8 +85,8 @@ class FruitHalf {
     const localSliceAngle = sliceAngle - fruit.rotation;
     const perpAngle = localSliceAngle + Math.PI / 2;
 
-    const spriteA = FruitHalf._buildHalfSprite(sprite, radius, perpAngle, -1);
-    const spriteB = FruitHalf._buildHalfSprite(sprite, radius, perpAngle, 1);
+    const spriteA = FruitHalf._buildHalfSprite(fruit.type, radius, perpAngle, -1);
+    const spriteB = FruitHalf._buildHalfSprite(fruit.type, radius, perpAngle, 1);
 
     // Push the two halves apart along the slice's perpendicular direction,
     // plus a bit of the fruit's own momentum, so they visibly separate.
@@ -121,16 +125,27 @@ class FruitHalf {
   }
 
   /**
-   * Pre-render one half of a sprite (clipped along perpAngle) onto an
-   * offscreen canvas, once, at slice time. `side` is -1 or 1 to pick
-   * which side of the cut line to keep.
+   * Pre-render one half of a fruit onto an offscreen canvas, once, at
+   * slice time. `side` is -1 or 1 to pick which side of the cut line to
+   * keep. Builds a real cross-section look:
+   *   1. flesh + seed/segment texture fills the whole half (including
+   *      right up to the flat cut edge)
+   *   2. the fruit's skin/rind ring is drawn on top, clipped to the same
+   *      half, so it only reappears around the curved outer edge
+   *   3. a thin bright "wet cut" rim line is drawn along the flat edge
    */
-  static _buildHalfSprite(sprite, radius, perpAngle, side) {
+  static _buildHalfSprite(fruitType, radius, perpAngle, side) {
     const size = radius * 2;
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
+
+    const flesh = AssetLoader.getFleshSprite(fruitType);
+    const skinRing = AssetLoader.getSkinRing(fruitType);
+    // Bombs (and anything without cross-section art) fall back to the
+    // flat whole-fruit sprite, just clipped like before.
+    const fallback = !flesh ? AssetLoader.getSprite(fruitType) : null;
 
     ctx.translate(radius, radius);
     ctx.save();
@@ -145,8 +160,33 @@ class FruitHalf {
     ctx.clip();
 
     ctx.rotate(-perpAngle);
-    ctx.drawImage(sprite, -radius, -radius, size, size);
+    if (fallback) {
+      ctx.drawImage(fallback, -radius, -radius, size, size);
+    } else {
+      ctx.drawImage(flesh, -radius, -radius, size, size);
+      ctx.drawImage(skinRing, -radius, -radius, size, size);
+    }
     ctx.restore();
+
+    // Wet cut-edge highlight: a thin bright line along the flat cut,
+    // fading toward the outer rind so it reads as a fresh, juicy cut
+    // rather than a hard graphic edge.
+    if (!fallback) {
+      ctx.save();
+      ctx.rotate(perpAngle);
+      const edgeX = side < 0 ? 0 : 0; // the cut line always runs through the origin
+      const grad = ctx.createLinearGradient(0, -radius, 0, radius);
+      grad.addColorStop(0, 'rgba(255,255,255,0)');
+      grad.addColorStop(0.5, 'rgba(255,255,255,0.55)');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = Math.max(1.5, radius * 0.035);
+      ctx.beginPath();
+      ctx.moveTo(edgeX, -radius * 0.9);
+      ctx.lineTo(edgeX, radius * 0.9);
+      ctx.stroke();
+      ctx.restore();
+    }
 
     return canvas;
   }

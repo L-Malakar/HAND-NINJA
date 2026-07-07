@@ -18,6 +18,7 @@
   const scoreValue = document.getElementById('score-value');
   const comboValue = document.getElementById('combo-value');
   const livesValue = document.getElementById('lives-value');
+  const livesBlock = document.getElementById('lives-block');
   const finalScore = document.getElementById('final-score');
 
   let game = null;
@@ -28,9 +29,18 @@
     statusText.classList.toggle('error', isError);
   }
 
+  /** Briefly toggle the "bump" pop animation on a HUD value element. */
+  function bump(el) {
+    el.classList.remove('bump');
+    // Force reflow so the animation can be re-triggered on rapid changes.
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }
+
   function renderLives(lives) {
     const filled = Math.max(0, lives);
     livesValue.textContent = '●'.repeat(filled) + '○'.repeat(Math.max(0, 3 - filled));
+    livesBlock.classList.toggle('low-lives', lives === 1);
   }
 
   function initGame() {
@@ -40,12 +50,15 @@
       callbacks: {
         onScoreChange: (score) => {
           scoreValue.textContent = String(score);
+          bump(scoreValue);
         },
         onComboChange: (combo) => {
           comboValue.textContent = `x${combo}`;
+          if (combo > 0) bump(comboValue);
         },
         onLivesChange: (lives) => {
           renderLives(lives);
+          bump(livesValue);
         },
         onGameOver: (score) => {
           finalScore.textContent = `Score: ${score}`;
@@ -73,6 +86,10 @@
     startBtn.disabled = true;
     setStatus('Requesting camera access…');
 
+    // Must happen from a user-gesture handler like this click for
+    // autoplay/audio policies to allow sound to actually play.
+    AudioFX.init?.();
+
     try {
       if (!tracker) {
         await initTracker();
@@ -80,6 +97,7 @@
       setStatus('');
       startScreen.classList.add('hidden');
       gameOverScreen.classList.add('hidden');
+      livesBlock.classList.remove('low-lives');
       renderLives(3);
       comboValue.textContent = 'x0';
       scoreValue.textContent = '0';
@@ -99,7 +117,9 @@
   }
 
   function restartGame() {
+    AudioFX.init?.();
     gameOverScreen.classList.add('hidden');
+    livesBlock.classList.remove('low-lives');
     renderLives(3);
     comboValue.textContent = 'x0';
     scoreValue.textContent = '0';
