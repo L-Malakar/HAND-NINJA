@@ -5,6 +5,8 @@ index finger**, tracked in real time using **Google's MediaPipe Hands**.
 
 No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 
+**Click Here-->**[![Live Website (Not optimize yet)](https://img.shields.io/badge/Live%20site-VLC_Orange)](https://l-malakar.github.io/HAND-NINJA/)
+
 ## How it works
 
 - **Camera feed** is captured via `getUserMedia` and displayed (mirrored) as
