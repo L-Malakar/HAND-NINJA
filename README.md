@@ -65,6 +65,19 @@ any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 - **Fruit types & colors**: edit `FRUIT_DEFS` in `assetLoader.js`.
 - **Blade feel**: adjust `maxPoints`, `fadeMs`, and smoothing factor
   (`SMOOTHING` in `game.js`).
-```
-@l-malakar
-```
+---
+<b>Dev:</b> 
+-
+<table>
+  <tr>
+    <td>
+      <a href="https://www.youtube.com/@gdmalakar">
+        <img src="https://yt3.googleusercontent.com/Khmav_bBMzqoVJE8ubBONlKjNkwFLI07w7RfosBBB4jD9R6eQjJoZO-nnRAwfPbnNFRc_Zjx=s160-c-k-c0x00ffffff-no-rj" width="24" height="24" style="border-radius:50%; display:block;" />
+      </a>
+    </td>
+    <td>
+      <a href="https://www.youtube.com/@gdmalakar">L. Malakar</a>.
+    </td>
+  </tr>
+</table>
+
