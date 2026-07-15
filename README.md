@@ -43,7 +43,7 @@ HAND-NINJA/
         └── assetLoader.js       # Procedurally generates fruit/bomb sprites
 ```
 
-This is a fully static site — deploy the `fruit-ninja-hand/` folder as-is to
+This is a fully static site — deploy the `HAND-NINJA/` folder as-is to
 any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 **HTTPS is required** in production for camera access (except on `localhost`).
 
