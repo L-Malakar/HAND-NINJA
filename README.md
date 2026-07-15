@@ -24,7 +24,7 @@ No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 ## Project structure
 
 ```
-fruit-ninja-hand/
+HAND-NINJA/
 ├── index.html              # App shell, screens, HUD
 ├── css/
 │   └── styles.css          # All styling
