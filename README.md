@@ -1,12 +1,12 @@
-## Hand Ninja 🍉
+# [<img src="https://avatars.githubusercontent.com/u/261390550?v=4&size=64" width="40" valign="top" />](https://www.youtube.com/@gdmalakar) Hand Ninja 🍉
 
 A browser-based Fruit Ninja clone controlled entirely by your **right hand's
 index finger**, tracked in real time using **Google's MediaPipe Hands**.
 
+### <a href="https://l-malakar.github.io/HAND-NINJA/"><img src="https://l-malakar.github.io/HAND-NINJA/asset/logo.svg" width="120" height="120" valign="middle"></a> [▶ Play Now](https://l-malakar.github.io/HAND-NINJA/)
 No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 
 [![LLOF - Terminal Loop Banner](https://l-malakar.github.io/HAND-NINJA/asset/banner.svg)](https://l-malakar.github.io/HAND-NINJA/)
-### [▶ Play Now](https://l-malakar.github.io/HAND-NINJA/)
 
 ## How it works
 
