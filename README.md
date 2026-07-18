@@ -1,11 +1,12 @@
-# Hand Ninja 🍉
+## Hand Ninja 🍉
 
 A browser-based Fruit Ninja clone controlled entirely by your **right hand's
 index finger**, tracked in real time using **Google's MediaPipe Hands**.
 
 No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 
-**Click Here-->**[![Live Website (Not optimize yet)](https://img.shields.io/badge/Live%20site-VLC_Orange)](https://l-malakar.github.io/HAND-NINJA/)
+[![LLOF - Terminal Loop Banner](https://l-malakar.github.io/HAND-NINJA/asset/banner.svg)](https://l-malakar.github.io/HAND-NINJA/)
+### [▶ Play Now](https://l-malakar.github.io/HAND-NINJA/)
 
 ## How it works
 
@@ -16,31 +17,45 @@ No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 - The fingertip position drives a **Blade** that leaves a glowing trail.
   Fast movements across a fruit's hitbox slice it.
 - **Fruit** spawn from the bottom of the screen on arcing trajectories under
-  simulated gravity. Sliced fruit splits into two halves with a juice-particle
-  burst. Bombs end the run on contact.
+  simulated gravity. Sliced fruit splits into two independent **FruitHalf**
+  physics bodies, each with its own velocity, gravity, and spin, plus a
+  juice-particle burst. Bombs trigger a layered explosion (fireball,
+  shockwave rings, smoke, embers, shrapnel) and end the run on contact.
 - Missed fruit (falls off-screen unsliced) costs a life. Three missed fruit
   or one bomb ends the game.
+- **Score popups & combos** are shown via floating text (e.g. `+30`,
+  `x4 COMBO!`) that rises and fades out.
+- **Sound effects** are synthesized entirely with the Web Audio API — no
+  audio files — with a distinct acoustic signature per fruit type (a heavy
+  thud for watermelon, a crisp crack for apple, a zesty spray for citrus,
+  etc.), plus a shared reverb send and limiter.
 
 ## Project structure
 
 ```
 HAND-NINJA/
-├── index.html              # App shell, screens, HUD
+├── index.html               # App shell, screens, HUD
 ├── css/
-│   └── styles.css          # All styling
+│   └── styles.css           # All styling
 └── js/
-    ├── main.js              # Bootstraps app, wires tracker <-> game, UI state
+    ├── main.js               # Bootstraps app, wires tracker <-> game, UI state
     ├── core/
-    │   ├── handTracker.js   # MediaPipe Hands wrapper (right-hand index tip)
+    │   ├── handTracker.js    # MediaPipe Hands wrapper (right-hand index tip)
     │   ├── blade.js          # Blade trail: history, drawing, collision segment
-    │   ├── spawner.js         # Fruit/bomb spawn timing & launch physics
+    │   ├── spawner.js        # Fruit/bomb spawn timing & launch physics
     │   └── game.js            # Main loop, scoring, collisions, rendering
+    ├── effects/
+    │   ├── audioFx.js        # Web Audio synthesized sound engine (no audio assets)
+    │   ├── explosion.js      # Bomb detonation effect (fireball, shockwaves, shrapnel)
+    │   ├── floatingText.js   # Rising/fading score & combo popups
+    │   └── screenEffect.js   # Juice-splash physics at the cut point
     ├── entities/
-    │   ├── fruit.js           # Fruit/bomb entity: physics + slice rendering
-    │   └── particle.js         # Juice-splash particle effects
+    │   ├── fruit.js          # Fruit/bomb entity: physics + slice rendering
+    │   ├── fruitHalf.js      # Independent physics body for each sliced-fruit half
+    │   └── particle.js       # Juice-splash particle effects
     └── utils/
-        ├── math.js             # Shared math/geometry helpers
-        └── assetLoader.js       # Procedurally generates fruit/bomb sprites
+        ├── math.js            # Shared math/geometry helpers
+        └── assetLoader.js     # Procedurally generates fruit/bomb sprites
 ```
 
 This is a fully static site — deploy the `HAND-NINJA/` folder as-is to
@@ -65,6 +80,10 @@ any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
 - **Fruit types & colors**: edit `FRUIT_DEFS` in `assetLoader.js`.
 - **Blade feel**: adjust `maxPoints`, `fadeMs`, and smoothing factor
   (`SMOOTHING` in `game.js`).
+- **Sound**: tune or extend per-fruit acoustic profiles in `audioFx.js`.
+- **Bomb explosion look**: tune fireball/shockwave/shrapnel params in
+  `explosion.js`.
+
 ---
 <b>Dev:</b> 
 -
@@ -80,4 +99,3 @@ any static host (Netlify, Vercel, GitHub Pages, S3 + CloudFront, etc.).
     </td>
   </tr>
 </table>
-
