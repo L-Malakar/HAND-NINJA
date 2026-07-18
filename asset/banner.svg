@@ -1,0 +1,169 @@
+<svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- wood background -->
+    <linearGradient id="woodBase" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5a3a20"/>
+      <stop offset="50%" stop-color="#432912"/>
+      <stop offset="100%" stop-color="#2e1a0a"/>
+    </linearGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+      <stop offset="30%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.45"/>
+    </linearGradient>
+
+    <!-- letter gradients -->
+    <linearGradient id="gHand1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd23f"/>
+      <stop offset="100%" stop-color="#ff8c00"/>
+    </linearGradient>
+    <linearGradient id="gHand2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff5f6d"/>
+      <stop offset="100%" stop-color="#d81f3f"/>
+    </linearGradient>
+    <linearGradient id="gHand3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8ee000"/>
+      <stop offset="100%" stop-color="#3f9c1c"/>
+    </linearGradient>
+    <linearGradient id="gHand4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a56bff"/>
+      <stop offset="100%" stop-color="#6a1fd6"/>
+    </linearGradient>
+    <linearGradient id="gNinja" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6f9fc"/>
+      <stop offset="55%" stop-color="#d3dbe4"/>
+      <stop offset="100%" stop-color="#9aa7b4"/>
+    </linearGradient>
+
+    <!-- blade gradient -->
+    <linearGradient id="bladeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#ffe27a" stop-opacity="1"/>
+    </linearGradient>
+
+    <!-- watermelon gradients -->
+    <radialGradient id="wmFlesh" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#ff9494"/>
+      <stop offset="70%" stop-color="#ff5757"/>
+      <stop offset="100%" stop-color="#e5313f"/>
+    </radialGradient>
+    <linearGradient id="wmRind" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7fd858"/>
+      <stop offset="100%" stop-color="#3f9c1c"/>
+    </linearGradient>
+
+    <radialGradient id="splashGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff4d4d" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ff4d4d" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="640" height="360" fill="url(#woodBase)"/>
+  <g opacity="0.25" stroke="#1c1006" stroke-width="2" fill="none">
+    <path d="M0 40 Q320 55 640 35"/>
+    <path d="M0 90 Q320 75 640 95"/>
+    <path d="M0 150 Q320 165 640 145"/>
+    <path d="M0 210 Q320 195 640 215"/>
+    <path d="M0 270 Q320 285 640 265"/>
+    <path d="M0 320 Q320 305 640 325"/>
+  </g>
+  <rect width="640" height="360" fill="url(#vignette)"/>
+
+  <!-- juice splash burst behind fruit -->
+  <circle cx="230" cy="230" r="150" fill="url(#splashGrad)"/>
+  <g fill="#e8283a" opacity="0.9">
+    <circle cx="150" cy="210" r="7"/>
+    <circle cx="175" cy="180" r="5"/>
+    <circle cx="310" cy="200" r="6"/>
+    <circle cx="330" cy="240" r="9"/>
+    <circle cx="120" cy="260" r="5"/>
+    <circle cx="290" cy="150" r="4"/>
+    <circle cx="200" cy="290" r="6"/>
+  </g>
+
+  <!-- sliced watermelon -->
+  <g filter="url(#softShadow)">
+    <!-- top half -->
+    <g transform="translate(215,215) rotate(-14)">
+      <path d="M -70 0 A 70 70 0 0 1 70 0 Z" fill="url(#wmRind)" stroke="#245b0e" stroke-width="3"/>
+      <path d="M -62 -3 A 62 62 0 0 1 62 -3 L 62 4 A 62 62 0 0 1 -62 4 Z" fill="#f4e9c9"/>
+      <path d="M -55 3 A 55 55 0 0 1 55 3 Z" fill="url(#wmFlesh)"/>
+      <circle cx="-25" cy="-20" r="3.4" fill="#2b1400"/>
+      <circle cx="0" cy="-28" r="3.4" fill="#2b1400"/>
+      <circle cx="25" cy="-20" r="3.4" fill="#2b1400"/>
+      <circle cx="-12" cy="-10" r="3" fill="#2b1400"/>
+      <circle cx="14" cy="-10" r="3" fill="#2b1400"/>
+    </g>
+    <!-- bottom half, offset for the slice gap -->
+    <g transform="translate(200,262) rotate(-14)">
+      <path d="M -70 6 A 70 70 0 0 0 70 6 Z" fill="url(#wmRind)" stroke="#245b0e" stroke-width="3"/>
+      <path d="M -62 3 A 62 62 0 0 0 62 3 L 62 -4 A 62 62 0 0 0 -62 -4 Z" fill="#f4e9c9"/>
+      <path d="M -55 -3 A 55 55 0 0 0 55 -3 Z" fill="url(#wmFlesh)"/>
+      <circle cx="-22" cy="18" r="3.4" fill="#2b1400"/>
+      <circle cx="2" cy="24" r="3.4" fill="#2b1400"/>
+      <circle cx="26" cy="16" r="3.4" fill="#2b1400"/>
+      <circle cx="-10" cy="10" r="3" fill="#2b1400"/>
+    </g>
+  </g>
+
+  <!-- blade slash through the fruit -->
+  <g filter="url(#glow)">
+    <path d="M 95 305 L 400 130" stroke="url(#bladeGrad)" stroke-width="10" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- second blade streak, upper right, like the reference image -->
+  <g filter="url(#glow)" transform="translate(430,150) rotate(-18)">
+    <path d="M0 0 L150 -18 L146 -6 L6 8 Z" fill="url(#bladeGrad)"/>
+  </g>
+
+  <!-- small extra fruit accents -->
+  <g filter="url(#softShadow)" transform="translate(555,270) rotate(8)">
+    <circle r="26" fill="#8ee000" stroke="#3f9c1c" stroke-width="3"/>
+    <path d="M -4 -24 q 10 -8 16 2" stroke="#3f9c1c" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+  <g filter="url(#softShadow)" transform="translate(30,60) rotate(-6)">
+    <circle r="24" fill="#ffb03b" stroke="#c97300" stroke-width="3"/>
+    <circle r="24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.35"/>
+  </g>
+
+  <!-- title text -->
+  <g filter="url(#softShadow)" font-family="Arial Black, Arial, sans-serif" font-weight="900">
+    <!-- HAND -->
+    <text x="42" y="118" font-size="86" fill="url(#gHand1)" stroke="#3a1d00" stroke-width="3" paint-order="stroke" letter-spacing="1">H</text>
+    <text x="118" y="118" font-size="86" fill="url(#gHand2)" stroke="#3a1d00" stroke-width="3" paint-order="stroke" letter-spacing="1">A</text>
+    <text x="196" y="118" font-size="86" fill="url(#gHand3)" stroke="#3a1d00" stroke-width="3" paint-order="stroke" letter-spacing="1">N</text>
+    <text x="270" y="118" font-size="86" fill="url(#gHand4)" stroke="#3a1d00" stroke-width="3" paint-order="stroke" letter-spacing="1">D</text>
+
+    <!-- NINJA -->
+    <text x="340" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">N</text>
+    <text x="404" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">I</text>
+    <text x="428" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">N</text>
+    <text x="492" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">J</text>
+    <text x="536" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">A</text>
+  </g>
+
+  <!-- little leaf accent above the A of HAND -->
+  <g transform="translate(255,28) rotate(-10)">
+    <path d="M0 20 C -14 8 -10 -10 6 -14 C 4 0 6 12 0 20 Z" fill="#3f9c1c" stroke="#245b0e" stroke-width="1.5"/>
+  </g>
+  <g transform="translate(268,22) rotate(20)">
+    <path d="M0 18 C 12 8 10 -8 -4 -12 C -2 0 -4 10 0 18 Z" fill="#5fce30" stroke="#245b0e" stroke-width="1.5"/>
+  </g>
+
+  <!-- fingertip glint on the blade, nod to the hand-tracking gameplay -->
+  <circle cx="400" cy="130" r="7" fill="#fff6d8" filter="url(#glow)"/>
+</svg>
