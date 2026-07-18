@@ -6,7 +6,7 @@ index finger**, tracked in real time using **Google's MediaPipe Hands**.
 ### <a href="https://l-malakar.github.io/HAND-NINJA/"><img src="https://l-malakar.github.io/HAND-NINJA/asset/logo.svg" width="120" height="120" valign="middle"></a> [▶ Play Now](https://l-malakar.github.io/HAND-NINJA/)
 No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 
-[![LLOF - Terminal Loop Banner](https://l-malakar.github.io/HAND-NINJA/asset/banner.svg)](https://l-malakar.github.io/HAND-NINJA/)
+[![Hand Ninja](https://l-malakar.github.io/HAND-NINJA/asset/banner.svg)](https://l-malakar.github.io/HAND-NINJA/)
 
 ## How it works
 
