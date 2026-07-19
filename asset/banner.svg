@@ -125,11 +125,6 @@
     <path d="M 95 305 L 400 130" stroke="url(#bladeGrad)" stroke-width="10" stroke-linecap="round" fill="none"/>
   </g>
 
-  <!-- second blade streak, upper right, like the reference image -->
-  <g filter="url(#glow)" transform="translate(430,150) rotate(-18)">
-    <path d="M0 0 L150 -18 L146 -6 L6 8 Z" fill="url(#bladeGrad)"/>
-  </g>
-
   <!-- small extra fruit accents -->
   <g filter="url(#softShadow)" transform="translate(555,270) rotate(8)">
     <circle r="26" fill="#8ee000" stroke="#3f9c1c" stroke-width="3"/>
@@ -156,12 +151,15 @@
     <text x="536" y="118" font-size="80" fill="url(#gNinja)" stroke="#20242a" stroke-width="3" paint-order="stroke" letter-spacing="0">A</text>
   </g>
 
-  <!-- little leaf accent above the A of HAND -->
-  <g transform="translate(255,28) rotate(-10)">
+  <!-- split leaf accents (two half-leaves each) centered above I and J, like the dot on i/j -->
+  <g transform="translate(419,40) scale(0.75)">
     <path d="M0 20 C -14 8 -10 -10 6 -14 C 4 0 6 12 0 20 Z" fill="#3f9c1c" stroke="#245b0e" stroke-width="1.5"/>
+    <path d="M0 20 C 14 8 10 -10 -6 -14 C -4 0 -6 12 0 20 Z" fill="#5fce30" stroke="#245b0e" stroke-width="1.5"/>
   </g>
-  <g transform="translate(268,22) rotate(20)">
-    <path d="M0 18 C 12 8 10 -8 -4 -12 C -2 0 -4 10 0 18 Z" fill="#5fce30" stroke="#245b0e" stroke-width="1.5"/>
+
+  <g transform="translate(530,40) scale(0.75)">
+    <path d="M0 20 C -14 8 -10 -10 6 -14 C 4 0 6 12 0 20 Z" fill="#3f9c1c" stroke="#245b0e" stroke-width="1.5"/>
+    <path d="M0 20 C 14 8 10 -10 -6 -14 C -4 0 -6 12 0 20 Z" fill="#5fce30" stroke="#245b0e" stroke-width="1.5"/>
   </g>
 
   <!-- fingertip glint on the blade, nod to the hand-tracking gameplay -->
