@@ -1,7 +1,7 @@
 :root {
   --bg: #0b0d10;
-  --accent: #ff5e3a;
-  --accent-2: #5ef0c8;
+--accent: #c97300;
+--accent-2: #3f9c1c;
   --accent-3: #ffd23f;
   --text: #f4f1ea;
   --text-dim: #9aa0a6;
@@ -130,8 +130,6 @@ html, body {
 
 .hud-value {
   font-size: 1.4rem;
-  color: var(--accent-2);
-  text-shadow: 0 0 14px rgba(94, 240, 200, 0.45);
   transition: transform 0.15s ease;
 }
 
@@ -146,15 +144,8 @@ html, body {
   100% { transform: scale(1); }
 }
 
-#combo-block .hud-value {
-  color: var(--accent-3);
-  text-shadow: 0 0 14px rgba(255, 210, 63, 0.5);
-}
-
 #lives-block .hud-value {
-  color: var(--danger);
   letter-spacing: 0.2em;
-  text-shadow: 0 0 14px rgba(255, 59, 59, 0.55);
 }
 
 #lives-block.low-lives .hud-value {
@@ -174,10 +165,7 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 20;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(255, 94, 58, 0.2), transparent 60%),
-    radial-gradient(circle at 20% 80%, rgba(94, 240, 200, 0.12), transparent 55%),
-    rgba(5, 6, 8, 0.74);
+  background: rgba(5, 6, 8, 0.74);
   backdrop-filter: blur(8px);
   animation: screen-fade 0.35s ease;
 }
@@ -219,50 +207,11 @@ html, body {
   }
 }
 
-/* thin animated glow border sweeping around the panel edge */
-.panel::before {
-  content: '';
-  position: absolute;
-  inset: -40%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(255, 94, 58, 0.55) 40deg,
-    transparent 90deg,
-    transparent 270deg,
-    rgba(94, 240, 200, 0.45) 320deg,
-    transparent 360deg
-  );
-  animation: panel-spin 6s linear infinite;
-  z-index: -2;
-}
-
-.panel::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  background: var(--panel-bg);
-  border-radius: 20px;
-  z-index: -1;
-}
-
-@keyframes panel-spin {
-  to { transform: rotate(360deg); }
-}
-
 .panel h1 {
   font-family: var(--font-display);
   font-size: 2.6rem;
   letter-spacing: 0.08em;
-  color: var(--accent);
-  text-shadow: 0 0 30px rgba(255, 94, 58, 0.55);
   margin-bottom: 12px;
-  animation: title-flicker 3.2s ease-in-out infinite;
-}
-
-@keyframes title-flicker {
-  0%, 100% { text-shadow: 0 0 30px rgba(255, 94, 58, 0.55); }
-  50% { text-shadow: 0 0 44px rgba(255, 94, 58, 0.85), 0 0 12px rgba(255, 210, 63, 0.4); }
 }
 
 .tagline {
@@ -328,13 +277,6 @@ html, body {
   cursor: pointer;
   overflow: hidden;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 10px 30px rgba(94, 240, 200, 0.28);
-  animation: btn-breathe 2.4s ease-in-out infinite;
-}
-
-@keyframes btn-breathe {
-  0%, 100% { box-shadow: 0 10px 30px rgba(94, 240, 200, 0.28); }
-  50% { box-shadow: 0 12px 40px rgba(94, 240, 200, 0.5); }
 }
 
 /* animated sheen sweeping across the button */
@@ -362,8 +304,6 @@ html, body {
 
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 16px 42px rgba(94, 240, 200, 0.45);
-  animation-play-state: paused;
 }
 
 .btn-primary:active {
@@ -389,18 +329,6 @@ html, body {
   40% { transform: translateX(6px); }
   60% { transform: translateX(-4px); }
   80% { transform: translateX(4px); }
-}
-
-/* Game over score emphasis */
-#gameover-screen .panel h1 {
-  color: var(--danger);
-  text-shadow: 0 0 30px rgba(255, 59, 59, 0.55);
-  animation: title-flicker-red 3.2s ease-in-out infinite;
-}
-
-@keyframes title-flicker-red {
-  0%, 100% { text-shadow: 0 0 30px rgba(255, 59, 59, 0.55); }
-  50% { text-shadow: 0 0 44px rgba(255, 59, 59, 0.85); }
 }
 
 #final-score {
