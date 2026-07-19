@@ -51,6 +51,15 @@ class Game {
     this._smoothedTip = null; // for jitter smoothing
     this.SMOOTHING = 0.35;
 
+    this._activeBombCount = 0; // how many bombs are currently on screen (drives the boom loop)
+
+    // A single swipe usually crosses multiple fruit across several
+    // animation frames, not all in one frame, so cut/multi-cut is decided
+    // after a short silence rather than per-frame.
+    this._swipeSliceCount = 0;
+    this._swipeSilenceTimer = 0;
+    this.SWIPE_SOUND_WINDOW_MS = 180;
+
     this._resizeHandler = () => this.resize();
     window.addEventListener('resize', this._resizeHandler);
     this.resize();
@@ -120,6 +129,11 @@ class Game {
 
     if (this.spawner) this.spawner.reset();
 
+    AudioFX.stopBombLoop?.();
+    this._activeBombCount = 0;
+    this._swipeSliceCount = 0;
+    this._swipeSilenceTimer = 0;
+
     this.running = true;
     this.lastFrameTime = performance.now();
     this._loop();
@@ -163,7 +177,10 @@ class Game {
 
     // Spawn new fruit
     const spawned = this.spawner.update(dtMs);
-    for (const f of spawned) this.fruits.push(f);
+    for (const f of spawned) {
+      this.fruits.push(f);
+      if (!f.isBomb) AudioFX.fruitIn?.();
+    }
 
     // Update blade
     this.blade.update();
@@ -178,6 +195,15 @@ class Game {
       }
     }
     this.fruits = this.fruits.filter((f) => !f.markedForRemoval);
+
+    // Loop the boom sound for as long as any bomb is visible on screen.
+    const bombCount = this.fruits.reduce((n, f) => n + (f.isBomb ? 1 : 0), 0);
+    if (bombCount > 0 && this._activeBombCount === 0) {
+      AudioFX.startBombLoop?.();
+    } else if (bombCount === 0 && this._activeBombCount > 0) {
+      AudioFX.stopBombLoop?.();
+    }
+    this._activeBombCount = bombCount;
 
     // Update fruit halves (independent pieces from previously sliced fruit)
     for (const half of this.fruitHalves) {
@@ -217,8 +243,26 @@ class Game {
             this._onBombHit(fruit);
           } else {
             this._onFruitSliced(fruit, angle, bladeSpeed);
+            this._swipeSliceCount += 1;
+            this._swipeSilenceTimer = 0;
           }
         }
+      }
+    }
+
+    // Decide cut vs multi-cut once the swipe has gone quiet for a beat,
+    // since one continuous swipe usually lands its fruit across several
+    // frames rather than all in the same frame.
+    if (this._swipeSliceCount > 0) {
+      this._swipeSilenceTimer += dtMs;
+      if (this._swipeSilenceTimer >= this.SWIPE_SOUND_WINDOW_MS) {
+        if (this._swipeSliceCount === 1) {
+          AudioFX.cut?.();
+        } else {
+          AudioFX.multiCut?.();
+        }
+        this._swipeSliceCount = 0;
+        this._swipeSilenceTimer = 0;
       }
     }
 
@@ -342,6 +386,19 @@ class Game {
     this._addShake(0.55, 26);
     this.flashAlpha = 1;
     AudioFX.explosion?.();
+    AudioFX.blast?.();
+    AudioFX.stopBombLoop?.();
+    this._activeBombCount = 0;
+
+    // The swipe just ended abruptly (gameplay freezes next frame), so
+    // resolve any pending cut/multi-cut sound now instead of losing it.
+    if (this._swipeSliceCount === 1) {
+      AudioFX.cut?.();
+    } else if (this._swipeSliceCount > 1) {
+      AudioFX.multiCut?.();
+    }
+    this._swipeSliceCount = 0;
+    this._swipeSilenceTimer = 0;
 
     // The shockwave clears whatever else was mid-air.
     for (const f of this.fruits) {
