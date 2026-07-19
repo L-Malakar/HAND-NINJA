@@ -35,15 +35,24 @@ No installs, no backend — pure HTML/CSS/JS, deployable as a static site.
 ```
 HAND-NINJA/
 ├── index.html               # App shell, screens, HUD
+├── asset/
+│   ├── fx/
+│   │   ├──blast.mp3         # Bomb touch and game end scound
+│   │   ├──bomb.mp3          # Bomb apper on screen scound
+│   │   ├──cut.mp3           # Fruit cut sound
+│   │   ├──fruit.mp3         # Fruit apper on screen scound
+│   │   └──multi-cut.mp3     # Multipool fruit cut sound
+│   ├── banner.svg           # Banner image (16:9)
+│   └── logo.svg             # Main image (1:1)
 ├── css/
-│   └── styles.css           # All styling
+│   ├── styles.css           # All styling
+│   └── ui.css               # All UI elements in here
 └── js/
-    ├── main.js               # Bootstraps app, wires tracker <-> game, UI state
     ├── core/
-    │   ├── handTracker.js    # MediaPipe Hands wrapper (right-hand index tip)
     │   ├── blade.js          # Blade trail: history, drawing, collision segment
-    │   ├── spawner.js        # Fruit/bomb spawn timing & launch physics
-    │   └── game.js            # Main loop, scoring, collisions, rendering
+    │   ├── game.js           # Main loop, scoring, collisions, rendering
+    │   ├── handTracker.js    # MediaPipe Hands wrapper (right-hand index tip)
+    │   └── spawner.js        # Fruit/bomb spawn timing & launch physics
     ├── effects/
     │   ├── audioFx.js        # Web Audio synthesized sound engine (no audio assets)
     │   ├── explosion.js      # Bomb detonation effect (fireball, shockwaves, shrapnel)
@@ -53,9 +62,10 @@ HAND-NINJA/
     │   ├── fruit.js          # Fruit/bomb entity: physics + slice rendering
     │   ├── fruitHalf.js      # Independent physics body for each sliced-fruit half
     │   └── particle.js       # Juice-splash particle effects
-    └── utils/
-        ├── math.js            # Shared math/geometry helpers
-        └── assetLoader.js     # Procedurally generates fruit/bomb sprites
+    ├── utils/
+    │   ├── assetLoader.js     # Procedurally generates fruit/bomb sprites
+    │   └── math.js            # Shared math/geometry helpers
+    └── main.js                # Bootstraps app, wires tracker <-> game, UI state
 ```
 
 This is a fully static site — deploy the `HAND-NINJA/` folder as-is to
