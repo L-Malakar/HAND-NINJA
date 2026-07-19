@@ -484,5 +484,99 @@ const AudioFX = (() => {
     }
   }
 
-  return { init, slice, pop, combo, explosion, sliceFruit, setMuted, setVolume };
+  // ---------------------------------------------------------------------
+  // Recorded sample effects (asset/fx/*.mp3)
+  // ---------------------------------------------------------------------
+  // These play alongside the synthesized sounds above (nothing above this
+  // block is changed) using plain <audio> elements, so no CORS/decoding
+  // setup is needed and one-shots can freely overlap.
+
+  const SFX_PATHS = {
+    fruitIn: 'asset/fx/fruit.mp3',
+    cut: 'asset/fx/cut.mp3',
+    multiCut: 'asset/fx/multi-cut.mp3',
+    bomLoop: 'asset/fx/bomb.mp3',
+    blast: 'asset/fx/blast.mp3',
+  };
+
+  let bomLoopEl = null; // persistent looping element for the bomb-on-screen loop
+  const BOM_LOOP_END = 0.8; // seconds — restart the loop here instead of at the sample's natural end
+
+  /** Play a one-shot sample. Clones the node each time so overlapping calls don't cut each other off. */
+  function _playOneShot(path, volume = 1) {
+    if (muted) return;
+    try {
+      const el = new Audio(path);
+      el.volume = volume;
+      el.play().catch(() => {});
+    } catch (e) {
+      /* ignore playback errors (e.g. no user gesture yet) */
+    }
+  }
+
+  /** Fruit entering the screen (spawn). */
+  function fruitIn() {
+    _playOneShot(SFX_PATHS.fruitIn, 0.7);
+  }
+
+  /** Player sliced exactly one fruit in this swipe. */
+  function cut() {
+    _playOneShot(SFX_PATHS.cut, 1);
+  }
+
+  /** Player sliced two or more fruit in the same swipe. */
+  function multiCut() {
+    _playOneShot(SFX_PATHS.multiCut, 1);
+  }
+
+  /** Start the looping bomb-on-screen drone. Safe to call repeatedly. */
+  function startBombLoop() {
+    if (muted) return;
+    if (!bomLoopEl) {
+      bomLoopEl = new Audio(SFX_PATHS.bomLoop);
+      bomLoopEl.volume = 0.55;
+      // Native `loop` restarts at the file's actual end; we want a tighter
+      // 0.8s loop point, so restart manually once playback reaches it.
+      bomLoopEl.addEventListener('timeupdate', () => {
+        if (bomLoopEl.currentTime >= BOM_LOOP_END) {
+          bomLoopEl.currentTime = 0;
+          if (bomLoopEl.paused) bomLoopEl.play().catch(() => {});
+        }
+      });
+    }
+    if (bomLoopEl.paused) {
+      bomLoopEl.currentTime = 0;
+      bomLoopEl.play().catch(() => {});
+    }
+  }
+
+  /** Stop the bomb-on-screen loop (bomb left the screen, was hit, or run ended). */
+  function stopBombLoop() {
+    if (bomLoopEl && !bomLoopEl.paused) {
+      bomLoopEl.pause();
+      bomLoopEl.currentTime = 0;
+    }
+  }
+
+  /** Bomb was actually touched/sliced by the player. */
+  function blast() {
+    _playOneShot(SFX_PATHS.blast, 1);
+  }
+
+  return {
+    init,
+    slice,
+    pop,
+    combo,
+    explosion,
+    sliceFruit,
+    setMuted,
+    setVolume,
+    fruitIn,
+    cut,
+    multiCut,
+    startBombLoop,
+    stopBombLoop,
+    blast,
+  };
 })();
